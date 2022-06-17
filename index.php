@@ -1,7 +1,12 @@
 <?php
 
 include_once __DIR__ . '/vendor/autoload.php';
-Dotenv\Dotenv::createImmutable(kirby()->root('index'))->load(); // TODO: Add configurable path for .env
+
+use \Kirby\Cms\App as Kirby;
+use \Kirby\Cms\File as File;
+use \Kirby\Filesystem\File as FileSystem;
+
+Dotenv\Dotenv::createImmutable(kirby()->root('index'))->load();
 
 Kirby::plugin('robinscholz/kirby-mux', [
     'translations' => [
@@ -9,17 +14,20 @@ Kirby::plugin('robinscholz/kirby-mux', [
             'field.blocks.mux-video.thumbnail' => 'Generate thumbnail from frame',
             'field.blocks.mux-video.thumbnail.help' => 'In seconds',
         ],
-        'de' => [
-            'field.blocks.mux-video.thumbnail' => 'Thumbnail aus Frame generieren',
-            'field.blocks.mux-video.thumbnail.help' => 'In Sekunden',
+        'nl' => [
+            'field.blocks.mux-video.thumbnail' => 'Maak thumbnail van frame',
+            'field.blocks.mux-video.thumbnail.help' => 'In seconden',
         ],
     ],
     'blueprints' => [
         'files/mux-video' => __DIR__ . '/blueprints/files/mux-video.yml',
         'blocks/mux-video' => __DIR__ . '/blueprints/blocks/mux-video.yml'
     ],
+    'snippets' => [
+        'blocks/mux-video' => __DIR__ . '/snippets/blocks/mux-video.php'
+    ],
     'hooks' => [
-        'file.create:after' => function (Kirby\Cms\File $file) {
+        'file.create:after' => function (File $file) {
             if ($file->type() !== 'video') {
                 return;
             }
@@ -39,7 +47,7 @@ Kirby::plugin('robinscholz/kirby-mux', [
                 throw new Exception($e->getMessage());
             }
         },
-        'file.delete:before' => function (Kirby\Cms\File $file) {
+        'file.delete:before' => function (File $file) {
             if ($file->type() !== 'video') {
                 return;
             }
@@ -57,7 +65,7 @@ Kirby::plugin('robinscholz/kirby-mux', [
                 throw new Exception($e->getMessage());
             }
         },
-        'file.replace:before' => function (Kirby\Cms\File $file, Kirby\Filesystem\File $upload) {
+        'file.replace:before' => function (File $file, FileSystem $upload) {
             if ($upload->type() !== 'video') {
                 return;
             }
@@ -75,7 +83,7 @@ Kirby::plugin('robinscholz/kirby-mux', [
                 throw new Exception($e->getMessage());
             }
         },
-        'file.replace:after' => function (Kirby\Cms\File $newFile, Kirby\Cms\File $oldFile) {
+        'file.replace:after' => function (File $newFile, File $oldFile) {
             if ($newFile->type() !== 'video') {
                 return;
             }
