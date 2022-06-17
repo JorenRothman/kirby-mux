@@ -1,8 +1,7 @@
-
 <?php
 
-@include_once __DIR__ . '/vendor/autoload.php';
-Dotenv\Dotenv::createImmutable(kirby()->root('base'))->load(); // TODO: Add configurable path for .env
+include_once __DIR__ . '/vendor/autoload.php';
+Dotenv\Dotenv::createImmutable(kirby()->root('index'))->load(); // TODO: Add configurable path for .env
 
 Kirby::plugin('robinscholz/kirby-mux', [
     'translations' => [
@@ -21,7 +20,9 @@ Kirby::plugin('robinscholz/kirby-mux', [
     ],
     'hooks' => [
         'file.create:after' => function (Kirby\Cms\File $file) {
-            if ($file->type() !== 'video') { return; }
+            if ($file->type() !== 'video') {
+                return;
+            }
 
             // Authenticate
             $assetsApi = KirbyMux\Auth::assetsApi();
@@ -32,14 +33,16 @@ Kirby::plugin('robinscholz/kirby-mux', [
             // Save mux data
             try {
                 $file = $file->update([
-                  'mux' => $result->getData()
+                    'mux' => $result->getData()
                 ]);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 throw new Exception($e->getMessage());
             }
         },
         'file.delete:before' => function (Kirby\Cms\File $file) {
-            if ($file->type() !== 'video') { return; }
+            if ($file->type() !== 'video') {
+                return;
+            }
 
             // Authentication setup
             $assetsApi = KirbyMux\Auth::assetsApi();
@@ -55,7 +58,9 @@ Kirby::plugin('robinscholz/kirby-mux', [
             }
         },
         'file.replace:before' => function (Kirby\Cms\File $file, Kirby\Filesystem\File $upload) {
-            if ($upload->type() !== 'video') { return; }
+            if ($upload->type() !== 'video') {
+                return;
+            }
 
             // Authentication setup
             $assetsApi = KirbyMux\Auth::assetsApi();
@@ -71,7 +76,9 @@ Kirby::plugin('robinscholz/kirby-mux', [
             }
         },
         'file.replace:after' => function (Kirby\Cms\File $newFile, Kirby\Cms\File $oldFile) {
-            if ($newFile->type() !== 'video') { return; }
+            if ($newFile->type() !== 'video') {
+                return;
+            }
 
             // Authentication setup
             $assetsApi = KirbyMux\Auth::assetsApi();
@@ -82,10 +89,10 @@ Kirby::plugin('robinscholz/kirby-mux', [
             // Save playback Id
             try {
                 $newFile = $newFile->update([
-                'mux' => $result->getData()
+                    'mux' => $result->getData()
                 ]);
-            } catch(Exception $e) {
-            throw new Exception($e->getMessage());
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
             }
         }
     ]
