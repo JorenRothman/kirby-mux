@@ -11,13 +11,7 @@ Download and copy this repository to `/site/plugins/kirby-mux`.
 ### Git submodule
 
 ```
-git submodule add https://github.com/robinscholz/kirby-mux.git site/plugins/kirby-mux
-```
-
-### Composer
-
-```
-composer require robinscholz/kirby-mux
+git submodule add https://github.com/jorenrothman/kirby-mux.git site/plugins/kirby-mux
 ```
 
 ## Configuration
