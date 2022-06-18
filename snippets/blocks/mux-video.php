@@ -10,7 +10,7 @@ foreach ($page->videos($videos) as $video) {
 }
 ?>
 
-<script defer onload="mux_<?= $id ?>()" src="https://unpkg.com/@mux-elements/mux-player"></script>
+<script defer src="https://unpkg.com/@mux-elements/mux-player"></script>
 
 <div id="mux-<?= $id ?>" class="mux-video">
     <figure class="mux-video__figure">
@@ -21,22 +21,3 @@ foreach ($page->videos($videos) as $video) {
         </figcaption>
     </figure>
 </div>
-
-<script>
-    function mux_<?= $id ?>() {
-        const element = document.getElementById('mux' +
-            '-' + '<?= $id ?>');
-
-        const video = element.querySelector('mux-player');
-
-        console.log(video);
-
-        video.oncanplay = function() {
-            const duration = video.duration;
-
-            console.log(duration);
-        };
-
-
-    };
-</script>
